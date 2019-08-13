@@ -1,11 +1,50 @@
 import graphene
+from graphene_django.filter import DjangoFilterConnectionField
 
 from .types import CarType
 from .models import Car
 
 
 class CarsResolver(graphene.ObjectType):
-    cars = graphene.List(CarType)
+    car = graphene.relay.Node.Field(CarType)
+    all_cars = DjangoFilterConnectionField(CarType)
+    published_cars = DjangoFilterConnectionField(CarType)
 
-    def resolve_cars(_, info):
+    def resolve_all_cars(_, info):
         return Car.objects.all()
+
+    def resolve_published_cars(_, info):
+        return Car.objects.filter(is_publish=True)
+
+   
+
+
+class CarPub(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+
+    # The class attributes define the response of the mutation
+    car = graphene.Field(CarType)
+
+    def mutate(self, info, id):
+        car = Car.objects.get(id=id)
+        car.is_publish = True
+        car.save()
+
+        return CarPub(car=car)
+
+
+
+class CarUnpub(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+
+    car = graphene.Field(CarType)
+
+    def mutate(self, info, id):
+        car = Car.objects.get(id=id)
+        car.is_publish = False
+        car.save()
+
+        return CarUnpub(car=car)
+

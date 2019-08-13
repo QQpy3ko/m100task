@@ -1,22 +1,23 @@
 import graphene
+from graphene_django.filter import DjangoFilterConnectionField
 
-from cars.resolver import CarsResolver
+from cars.resolver import CarsResolver, CarPub, CarUnpub
+from cars.types import CarType
 
-class Query(
-    CarsResolver
-):
+
+class Query(CarsResolver):
     """Parent query class inherited from all real query classes
     """
-    pass
+    pass 
 
 
-class Mutation(graphene.ObjectType):
-    """Parent Mutation class containing all mutations
-    """
-    pass
+class CarMutation(CarUnpub):
+    unpublish_car = CarUnpub.Field()
+    publish_car = CarPub.Field()
+
 
 
 schema = graphene.Schema(
     query=Query,
-    # mutation=Mutation,
+    mutation=CarMutation
 )
