@@ -19,7 +19,7 @@ class CarsResolver(graphene.ObjectType):
    
 
 
-class CarPub(graphene.Mutation):
+class PublishCar(graphene.Mutation):
     class Arguments:
         id = graphene.Int()
 
@@ -31,11 +31,11 @@ class CarPub(graphene.Mutation):
         car.is_publish = True
         car.save()
 
-        return CarPub(car=car)
+        return PublishCar(car=car)
 
 
 
-class CarUnpub(graphene.Mutation):
+class UnpublishCar(graphene.Mutation):
     class Arguments:
         id = graphene.Int()
 
@@ -46,5 +46,5 @@ class CarUnpub(graphene.Mutation):
         car.is_publish = False
         car.save()
 
-        return CarUnpub(car=car)
+        return UnpublishCar(car=car)
 

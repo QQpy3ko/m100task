@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.filter import DjangoFilterConnectionField
 
-from cars.resolver import CarsResolver, CarPub, CarUnpub
+from cars.resolver import CarsResolver, PublishCar, UnpublishCar
 from cars.types import CarType
 
 
@@ -12,8 +12,8 @@ class Query(CarsResolver):
 
 
 class CarMutation(CarUnpub):
-    unpublish_car = CarUnpub.Field()
-    publish_car = CarPub.Field()
+    unpublish_car = UnpublishCar.Field()
+    publish_car = PublishCar.Field()
 
 
 
